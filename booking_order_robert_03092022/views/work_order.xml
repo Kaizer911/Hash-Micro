@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_work_order_form" model="ir.ui.view">
+        <field name="name">work.order.form</field>
+        <field name="model">work.order</field>
+        <field name="arch" type="xml">
+            <form string="Work Order">
+                <header>
+                    <field
+                        name="state"
+                        select="1"
+                        widget="statusbar"
+                        statusbar_visible="pending,inprogress,done"
+                    />
+                    <button name="action_work_start" type="object" class="btn-primary" string="Start Work" states="pending" />
+                    <button name="action_work_end" type="object" class="btn-primary" string="End Work" states="inprogress" />
+                    <button name="action_work_reset" type="object" class="btn-primary" string="Reset" states="inprogress" />
+                    <button name="action_work_cancel" type="object" string="Cancel" />
+                </header>
+                <sheet>
+                    <label for="name" string="WO Number" />
+                    <h1>
+                        <field name="name" select="1" readonly="1"/>
+                    </h1>
+                    <group>
+                        <field name="sale_order_id" readonly="1"/>
+                        <field name="service_team_id" required="1" />
+                        <field name="team_leader_id" required="1" />
+                        <field name="team_member_ids" widget="many2many_tags" />
+                        <field name="date_planned_start" required="1" />
+                        <field name="date_planned_end" required="1" />
+                        <field name="date_start" readonly="1"/>
+                        <field name="date_end" readonly="1"/>
+                    </group>
+                    <separator string="Notes" colspan="4" />
+                    <field name="notes" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_work_order_tree" model="ir.ui.view">
+        <field name="name">work.order.tree</field>
+        <field name="model">work.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="service_team_id" />
+                <field name="sale_order_id" />
+                <field name="team_leader_id" />
+                <field name="team_member_ids" widget="many2many_tags" />
+                <field name="date_planned_start" />
+                <field name="date_planned_end" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="notes" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_work_order_calendar" model="ir.ui.view">
+        <field name="name">work.order.calendar</field>
+        <field name="model">work.order</field>
+        <field name="arch" type="xml">
+            <calendar
+                string="Work Order"
+                date_start="date_start"
+                color="service_team_id"
+                date_stop="date_end"
+            >
+                <field name="team_leader_id" />
+                <field name="team_member_ids" />
+                <field name="total_working_days" />
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_work_order_pivot" model="ir.ui.view">
+         <field name="name">work.order.pivot</field>
+         <field name="model">work.order</field>
+         <field name="arch" type="xml">
+             <pivot string="Work Order" sample="1">
+                <field name="service_team_id" type="row"/>
+                <field name="date_planned_start" interval="day" type="col"/>
+                <field name="total_working_days" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_work_order_graph" model="ir.ui.view">
+         <field name="name">work.order.graph</field>
+         <field name="model">work.order</field>
+         <field name="arch" type="xml">
+            <graph string="Work Order" type="line" sample="1">
+                <field name="service_team_id" type="row"/>
+                <field name="total_planned_days" type="measure"/>
+                <field name="total_working_days" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="view_work_order_kanban" model="ir.ui.view">
+        <field name="name">work.order.kanban</field>
+        <field name="model">work.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="service_team_id" />
+                <field name="team_leader_id" />
+                <field name="team_member_ids" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click container">
+                            <div
+                                class="o_dropdown_kanban dropdown"
+                                groups="base.group_user"
+                            >
+                                <a
+                                    role="button"
+                                    class="dropdown-toggle btn"
+                                    data-toggle="dropdown"
+                                    href="#"
+                                >
+                                    <span title="fa_icon" class="fa fa-bars fa-lg" />
+                                </a>
+                                <ul
+                                    class="dropdown-menu"
+                                    role="menu"
+                                    aria-labelledby="dLabel"
+                                >
+                                    <t t-if="widget.editable">
+                                        <li>
+                                            <a type="edit">Edit</a>
+                                        </li>
+                                    </t>
+                                    <t t-if="widget.deletable">
+                                        <li>
+                                            <a type="delete">Delete</a>
+                                        </li>
+                                    </t>
+                                    <li>
+                                        <ul
+                                            class="oe_kanban_colorpicker"
+                                            data-field="color"
+                                        />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="oe_kanban_details" style='margin-top: -5px;'>
+                                <div class="oe_kanban_content">
+                                    <div class="oe_kanban_project_list">
+                                        <H3>
+                                            <a type="open">
+                                                <t
+                                                    t-if="record.name.raw_value"
+                                                    style="margin-right: 10px"
+                                                >
+                                                </t>
+                                                <field name="name" />
+                                            </a>
+                                        </H3>
+                                    </div>
+                                    <div name="tags" />
+                                    <ul>
+                                        <li>
+                                            Status:
+                                            <field name="state" />
+                                        </li>
+                                        <li>
+                                            Total Planned Days:
+                                            <field name="total_planned_days" />
+                                        </li>
+                                        <li>
+                                            Total Working Days:
+                                            <field name="total_working_days" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="oe_clear" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

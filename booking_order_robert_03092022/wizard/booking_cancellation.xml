@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="booking_cancellation_view" model="ir.ui.view">
+            <field name="name">booking.cancellation.view</field>
+            <field name="model">booking.cancellation</field>
+            <field name="arch" type="xml">
+                <form string="Reason of Cancellation">
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Confirm" name="action_confirm" type="object" class="btn-primary"/>
+                        <button string="Close" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

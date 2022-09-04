@@ -1,0 +1,9 @@
+<odoo noupdate="1">
+    <!-- Sequences for hotel folio -->
+    <record id="seq_work_order" model="ir.sequence">
+        <field name="name">Work Order</field>
+        <field name="code">work.order</field>
+        <field name="prefix">WO/%(year)s/</field>
+        <field name="padding">5</field>
+    </record>
+</odoo>

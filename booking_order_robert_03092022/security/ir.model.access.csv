@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_service_team_group,service.team.salesman,model_service_team,sales_team.group_sale_salesman,1,1,1,1
+access_work_order_group,work.order.salesman,model_work_order,sales_team.group_sale_salesman,1,1,1,1
+access_booking_cancellation_group,booking.cancellation.salesman,model_booking_cancellation,sales_team.group_sale_salesman,1,1,1,1

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_booking_order_form" model="ir.ui.view">
+        <field name="name">sale.order.booking.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
+                <button type="object"
+                    name="action_view_work_order"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    attrs="{'invisible': [('work_order_count', '=', 0)]}">
+                    <field name="work_order_count" widget="statinfo" string="Work Orders"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="is_booking_order" readonly="1" />
+                <field name="service_team_id" required="1" attrs="{'invisible': [('is_booking_order', '!=', True)], 'readonly': [('state', '=', 'sale')]}" />
+                <field name="team_leader_id" required="1" attrs="{'invisible': [('is_booking_order', '!=', True)], 'readonly': [('state', '=', 'sale')]}" />
+                <field name="team_member_ids" required="1" widget="many2many_tags" attrs="{'invisible': [('is_booking_order', '!=', True)], 'readonly': [('state', '=', 'sale')]}" />
+                <field name="booking_start" required="1" attrs="{'invisible': [('is_booking_order', '!=', True)], 'readonly': [('state', '=', 'sale')]}" />
+                <field name="booking_end" required="1" attrs="{'invisible': [('is_booking_order', '!=', True)], 'readonly': [('state', '=', 'sale')]}" />
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_check" type="object" string="Check" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

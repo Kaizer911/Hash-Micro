@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="booking_order_robert_03092022.report_workorder_document">
+    <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.sale_order_id.partner_id.lang)" />
+        <div class="page">
+            <div class="oe_structure"/>
+
+            <table class="table table-sm o_main_table" name="room_line_table">
+                <tr>
+                    <td style="border: 1px solid; font-size: 12px;" colspan="4"><span t-field="doc.name"/></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span>Team Name</span></td>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span t-field="doc.service_team_id.name"/></td>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span>Customer</span></td>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span t-field="doc.sale_order_id.partner_id.name"/></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span>Booking Order Ref</span></td>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span t-field="doc.sale_order_id.name"/></td>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span>Date</span></td>
+                    <td style="border: 1px solid; font-size: 12px;" width="25%"><span t-field="doc.date_start"/> - <span t-field="doc.date_end"/></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid; font-size: 12px;" colspan="4">
+                        <p> NOTES: </p>
+                        <p t-field="doc.notes"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid; font-size: 12px;" colspan="4">
+                        <p> Signature: </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </t>
+</template>
+
+
+<template id="booking_order_robert_03092022.report_workorder">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="booking_order_robert_03092022.report_workorder_document" t-lang="doc.sale_order_id.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+</odoo>
